@@ -1,0 +1,50 @@
+#include <iostream>
+#include <assert.h>
+
+int calcPrimes(int* primes, int maxN)
+{
+	bool* isPrime = new bool[maxN + 1];
+	for( int i = 0; i <= maxN; i++ ) {
+		isPrime[i] = true;
+	}
+	
+	// Вычеркнем все составные числа
+	for( int i = 2; i * i <= maxN; i++ ) {
+		if( isPrime[i] ) {
+			for( int j = i * i; j <= maxN; j += i ) {
+				isPrime[j] = false;
+			}
+		}
+	}
+
+	int primeIndex = 0;
+	for( int i = 0; i <= maxN; i++ ) {
+		if( isPrime[i] ) {
+			primes[primeIndex] = i;
+			primeIndex++;
+		}
+	}
+
+	delete[] isPrime;
+
+	return primeIndex;
+}
+
+int main()
+{
+	int maxN = 0;
+	std::cin >> maxN;
+
+	assert(maxN > 1);
+
+	// Заведём массив под хранение всех простых
+	int* primes = new int[maxN + 1];
+// Находим все простые
+	int primesCount = calcPrimes(primes, maxN);
+
+	for( int i = 2; i < primesCount; i++ ) {
+		std::cout << primes[i] << " ";
+	}
+	delete[] primes;
+	return 0;
+}
